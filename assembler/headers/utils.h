@@ -11,6 +11,6 @@ using namespace std;
 void readFile(char * fileName, vector<string> & lines);
 void clearSpace(string& s);
 string ith(int x, int max); // int to hex string
-void printData(int startAddress, int endAddress, const vector<int> & data);
+void printData(int startAddress, int endAddress, const vector<unsigned int> & data);
 
 #endif

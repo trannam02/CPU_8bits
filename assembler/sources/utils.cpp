@@ -43,10 +43,10 @@ string ith(int x, int max){
     return result;
 };
 
-void printData(int startAddress,int endAddress,const vector<int> & data){
+void printData(int startAddress,int endAddress,const vector<unsigned int> & data){
     cout << "Start address: " << startAddress << endl;
     cout << "End address: " << endAddress << endl;
-    cout << "Number of bytes: " << (endAddress - startAddress) * 8 << endl;
+    cout << "Number of bytes: " << (endAddress - startAddress) << " bytes" << endl;
     int maxInline = 10;
     int count = 0;
     int line = 0;

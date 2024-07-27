@@ -4,6 +4,6 @@
 #include <regex>
 using namespace std;
 
-void parserLine(string line, int& op, bool& isImmediate, int& con);
-void parserLines(vector<string>& lines, string opFileName, vector<int> & data);
+void parserLine(string line,unsigned int& op, bool& isImmediate, int& con);
+void parserLines(vector<string> & lines, vector<unsigned int>& opcodes, vector<unsigned int> & data);
 #endif

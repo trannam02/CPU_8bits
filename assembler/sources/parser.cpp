@@ -2,14 +2,12 @@
 using namespace std;
 
 
-void parserLines(vector<string> & lines, string opFileName, vector<int> & data){
-    int op = -1; 
+void parserLines(vector<string> & lines, vector<unsigned int>& opcodes, vector<unsigned int> & data){
+    unsigned int op = -1; 
     bool isImmediate = false;
     int con = 0;
     int romAddr = 0;
     
-    fstream opFile;
-    opFile.open(opFileName, ios_base::out);
     for(auto line = lines.begin(); line != lines.end(); line++){
         // reset variable
         op = -1;
@@ -18,18 +16,16 @@ void parserLines(vector<string> & lines, string opFileName, vector<int> & data){
         clearSpace(*line);
         parserLine(*line,op,isImmediate,con);
         // write op to file to handle control signal
-        opFile << to_string(op) << "\n";
+        opcodes.push_back(op);
 
         data.push_back(romAddr++);
         if(isImmediate) data.push_back(con);
     };
     printData(0, romAddr, data);
-
-    opFile.close();
 };
 
 
-void parserLine(string line, int& op, bool& isImmediate, int& con){
+void parserLine(string line,unsigned int& op, bool& isImmediate, int& con){
     // get const
     if(isdigit(line[line.size()-1])){
         isImmediate = 1;
