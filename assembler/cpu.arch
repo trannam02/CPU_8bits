@@ -1,0 +1,38 @@
+; DEFINE REGISTER 
+register  8 a,b,c,d
+register  8 tl,th
+register 16 si,di
+register 16 tx
+register 16 pc
+register 16 ra
+register 16 sp
+
+; DEFINE NOP INSTRUCTION
+
+nop      : datawrite 0
+
+; DEFINE CONSTANT LOAD
+;   R,C              OP
+mov a,#1 : datawrite 001,#1
+mov b,#1 : datawrite 002,#1
+mov c,#1 : datawrite 003,#1
+mov d,#1 : datawrite 004,#1
+
+;mov c,#1 : datawrite 003,#1
+;mov d,#1 : datawrite 004,#1
+
+; DEFINE MOVE REGISTERS DATA TO REGISTERS
+;   R,R              OP
+mov a,b  : datawrite 007
+mov a,c  : datawrite 008
+mov a,d  : datawrite 009
+mov b,a  : datawrite 00A
+mov b,c  : datawrite 00B
+mov b,d  : datawrite 00C
+mov c,a  : datawrite 00D
+mov c,b  : datawrite 00E
+mov c,d  : datawrite 00F
+mov d,a  : datawrite 010
+mov d,b  : datawrite 011
+mov d,c  : datawrite 012
+
