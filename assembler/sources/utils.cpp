@@ -1,5 +1,7 @@
 #include "./../headers/utils.h"
 
+
+
 void readFile(char * fileName, vector<string> & lines){
     string line;
     fstream file;
@@ -43,7 +45,8 @@ string ith(int x, int max){
     return result;
 };
 
-void printData(int startAddress,int endAddress,const vector<unsigned int> & data){
+void printData(const string &title, int startAddress,int endAddress,const vector<unsigned int> & data){
+    cout << setfill('=') << setw((40-(title.length()))/2 + title.length()) << title << setfill('=') << setw((40-(title.length()))/2) << "" << endl;
     cout << "Start address: " << startAddress << endl;
     cout << "End address: " << endAddress << endl;
     cout << "Number of bytes: " << (endAddress - startAddress) << " bytes" << endl;
@@ -54,11 +57,14 @@ void printData(int startAddress,int endAddress,const vector<unsigned int> & data
     for(auto it = data.begin(); it != data.end(); it++){
         cout << ith(*it, 2) << " ";
         count++;
+        line++;
         if(count == 10) {
-            cout << "\n" << ith(++line, 4) << ": ";
+            cout << "\n" << ith(line, 4) << ": ";
             count = 0;
         };
     };
+    cout << "\nCOPY:";
+    for(auto i : data) cout << i << ",";
     cout << endl;
 };
 

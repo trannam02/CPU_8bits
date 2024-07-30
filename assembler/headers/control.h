@@ -13,7 +13,7 @@ enum eControls
 
     // 1A
     Control_Load_Const_Mem = 0x01<<0,
-
+    // 1B
     // 2A
     Control_Assert_Bus_RegA = 0x01<<16,
     Control_Assert_Bus_RegB = 0x02<<16,
@@ -25,9 +25,11 @@ enum eControls
     Control_Load_RegB_Bus = 0x02<<20,
     Control_Load_RegC_Bus = 0x03<<20,
     Control_Load_RegD_Bus = 0x04<<20,
+    // 2B
 };
 
-void generateControl(const vector<unsigned int>& opcodes, vector<unsigned int>& controls);
-void outputControl(const vector<unsigned int> & controls);
+void generateControl(const vector<unsigned int>& instructions, vector<unsigned int>& controls);
+void generateMainRom(const vector<unsigned int> & instructions);
 
+void outputControl(const vector<unsigned int> & controls);
 #endif

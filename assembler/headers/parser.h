@@ -4,6 +4,13 @@
 #include <regex>
 using namespace std;
 
-void parserLine(string line,unsigned int& op, bool& isImmediate, int& con);
-void parserLines(vector<string> & lines, vector<unsigned int>& opcodes, vector<unsigned int> & data);
+void parserLine(string line,unsigned int & instruction);
+void parserLines(vector<string> & lines, vector<unsigned int>& instructions);
+
+unsigned int findFirstReg(const string & line);
+unsigned int findSecondReg(const string & line);
+unsigned int findThirdReg(const string & line);
+unsigned int findConstant(const string & line);
+unsigned int strRegToInt(string & reg);
+
 #endif
