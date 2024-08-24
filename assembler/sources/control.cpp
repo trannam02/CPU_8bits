@@ -2,10 +2,10 @@
 #include "./../headers/instruction.h"
 using namespace std;
 void generateControl(const vector<unsigned int>& instructions, vector<unsigned int>& controls){
-    FILE* filePtr1A;
-    FILE* filePtr1B;
-    FILE* filePtr2A;
-    FILE* filePtr2B;
+    fstream filePtr1A;
+    fstream filePtr1B;
+    fstream filePtr2A;
+    fstream filePtr2B;
     unsigned char buffer1A[instructions.size()];
     unsigned char buffer1B[instructions.size()];
     unsigned char buffer2A[instructions.size()];
@@ -52,6 +52,27 @@ void generateControl(const vector<unsigned int>& instructions, vector<unsigned i
                                   out |= Control_Load_Const_Mem | Control_Assert_Bus_Const;
                                   break;
                                };
+                case Func_ADD:{
+                                  switch(des){
+                                      case Reg_A: {out |= Control_Load_RegA_Bus; break;};
+                                      case Reg_B: {out |= Control_Load_RegB_Bus; break;};
+                                      case Reg_C: {out |= Control_Load_RegC_Bus; break;};
+                                      case Reg_D: {out |= Control_Load_RegD_Bus; break;};
+                                  };
+                                  switch(rs){
+                                      case Reg_A:{out |= Control_Select_ALUInputLHS_RegA;break;};
+                                      case Reg_B:{out |= Control_Select_ALUInputLHS_RegB;break;};
+                                      case Reg_C:{out |= Control_Select_ALUInputLHS_RegC;break;};
+                                      case Reg_D:{out |= Control_Select_ALUInputLHS_RegD;break;};
+                                  };
+                                  switch(rt){
+                                      case Reg_A:{out |= Control_Select_ALUInputRHS_RegA;break;};
+                                      case Reg_B:{out |= Control_Select_ALUInputRHS_RegB;break;};
+                                      case Reg_C:{out |= Control_Select_ALUInputRHS_RegC;break;};
+                                      case Reg_D:{out |= Control_Select_ALUInputRHS_RegD;break;};
+                                  };
+                                  out |= Control_Assert_Bus_ALU;
+                              };
             };
         };
         buffer1A[index] = out&255;
@@ -62,21 +83,21 @@ void generateControl(const vector<unsigned int>& instructions, vector<unsigned i
         controls.push_back(out);
     };
     // write file
-    filePtr1A = fopen("Control1A.bin","wb");
-    fwrite(buffer1A, sizeof(unsigned char), sizeof(buffer1A), filePtr1A);
-    fclose(filePtr1A);
+    filePtr1A.open("Control1A.bin", ios::binary | ios::out);
+    filePtr1A.write((char*)buffer1A, sizeof buffer1A);
+    filePtr1A.close();
 
-    filePtr1B = fopen("Control1B.bin","wb");
-    fwrite(buffer1B, sizeof(unsigned char), sizeof(buffer1B), filePtr1B);
-    fclose(filePtr1B);
+    filePtr1B.open("Control1B.bin", ios::binary | ios::out);
+    filePtr1B.write((char*)buffer1B, sizeof buffer1B);
+    filePtr1B.close();
 
-    filePtr2A = fopen("Control2A.bin","wb");
-    fwrite(buffer2A, sizeof(unsigned char), sizeof(buffer2A), filePtr2A);
-    fclose(filePtr2A);
+    filePtr2A.open("Control2A.bin", ios::binary | ios::out);
+    filePtr2A.write((char*)buffer2A, sizeof buffer2A);
+    filePtr2A.close();
 
-    filePtr2B = fopen("Control2B.bin","wb");
-    fwrite(buffer2B, sizeof(unsigned char), sizeof(buffer2B), filePtr2B);
-    fclose(filePtr2B);
+    filePtr2B.open("Control2B.bin", ios::binary | ios::out);
+    filePtr2B.write((char*)buffer2B, sizeof buffer2B);
+    filePtr2B.close();
     return;
 };
 void generateMainRom(const vector<unsigned int> & instructions){
@@ -86,18 +107,18 @@ void generateMainRom(const vector<unsigned int> & instructions){
     unsigned char buffer[instructions.size() * 2];
     int addr = 0;
     int index = 0;
-    cout << "MAINDATA:";
+    /* cout << "MAINDATA:"; */
     for(auto ins : instructions){
         if((ins>>23&127) <= 63){
             buffer[index] = addr;
-            cout << ith(addr, 2) << " ";
+            /* cout << ith(addr, 2) << " "; */
             index++; addr++;
         }else{
             buffer[index] = addr;
-            cout << ith(addr, 2) << " ";
+            /* cout << ith(addr, 2) << " "; */
             index++;
             buffer[index] = (ins&255);
-            cout << ith(ins&255,2) << " ";
+            /* cout << ith(ins&255,2) << " "; */
             index++; addr++;
         };
     };

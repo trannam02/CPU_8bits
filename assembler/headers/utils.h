@@ -11,7 +11,9 @@ using namespace std;
 
 void readFile(char * fileName, vector<string> & lines);
 void clearSpace(string& s);
-string ith(int x, int max); // int to hex string
+string ith(unsigned int x, int max); // int to hex string
 void printData(const string & title, int startAddress, int endAddress, const vector<unsigned int> & data);
+
+string bin2ihx(const string & binFile,int maxByteCount);
 
 #endif

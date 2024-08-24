@@ -47,12 +47,12 @@ void parserLine(string line,unsigned int & instruction) {
             instruction <<= 8;
             return;
         };
-        if(funcMatched[0] == "addi") {
-            instruction = instruction | ((Func_ADDI & 127) << 5);
-            instruction = (instruction << 5) | (findSecondReg(line)&31);
-            instruction = (instruction << 13) | (findConstant(line) & 255);
-            return;
-        };
+        /* if(funcMatched[0] == "addi") { */
+        /*     instruction = instruction | ((Func_ADDI & 127) << 5); */
+        /*     instruction = (instruction << 5) | (findSecondReg(line)&31); */
+        /*     instruction = (instruction << 13) | (findConstant(line) & 255); */
+        /*     return; */
+        /* }; */
     };
 };
 unsigned int findFirstReg(const string & line) {

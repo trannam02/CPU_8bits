@@ -2,11 +2,11 @@
 
 
 
-void readFile(char * fileName, vector<string> & lines){
+void readFile(char * fileName, vector<string> & lines) {
     string line;
     fstream file;
     file.open(fileName, ios_base::in);
-    while(1){
+    while(1) {
         if(file.eof()) break;
         getline(file, line);
         // remove black line
@@ -16,20 +16,20 @@ void readFile(char * fileName, vector<string> & lines){
     };
 };
 
-void clearSpace(string& s){
+void clearSpace(string& s) {
     int start = -1;
     int end = -1;
-    for(int i = 0; i < s.size(); i++){
-        if(s[i] == ' ' || s[i] == '\t'){
+    for(int i = 0; i < s.size(); i++) {
+        if(s[i] == ' ' || s[i] == '\t') {
             start = i;
-        }else {
+        } else {
             break;
         };
     };
-    for(int i = s.size() - 1; i > 0; i--){
-        if(s[i] == ' ' || s[i] == '\t'){
+    for(int i = s.size() - 1; i > 0; i--) {
+        if(s[i] == ' ' || s[i] == '\t') {
             end = i;
-        }else{
+        } else {
             break;
         };
     };
@@ -38,14 +38,20 @@ void clearSpace(string& s){
     return;
 };
 
-string ith(int x, int max){
+string ith(unsigned int _x, int max) { // fix max size
+    unsigned int x = (_x << (32 - max * 4)) >> (32 - max * 4);
     stringstream stream;
     stream << setfill('0') << setw(max) << std::hex << x;
-    string result(stream.str());
+    string result = stream.str().c_str();
+    int i = 0;
+    while(result[i]){
+        result[i] = toupper(result[i]);
+        i++;
+    };
     return result;
 };
 
-void printData(const string &title, int startAddress,int endAddress,const vector<unsigned int> & data){
+void printData(const string &title, int startAddress,int endAddress,const vector<unsigned int> & data) {
     cout << setfill('=') << setw((40-(title.length()))/2 + title.length()) << title << setfill('=') << setw((40-(title.length()))/2) << "" << endl;
     cout << "Start address: " << startAddress << endl;
     cout << "End address: " << endAddress << endl;
@@ -53,8 +59,8 @@ void printData(const string &title, int startAddress,int endAddress,const vector
     int maxInline = 10;
     int count = 0;
     int line = 0;
-    cout << ith(line,4) << ": "; 
-    for(auto it = data.begin(); it != data.end(); it++){
+    cout << ith(line,4) << ": ";
+    for(auto it = data.begin(); it != data.end(); it++) {
         cout << ith(*it, 2) << " ";
         count++;
         line++;
@@ -68,3 +74,51 @@ void printData(const string &title, int startAddress,int endAddress,const vector
     cout << endl;
 };
 
+
+string bin2ihx(const string & binFile,int maxByteCount) {
+    ifstream file(binFile, ios::binary);
+    file.seekg(0, ios::end);
+    unsigned int length = file.tellg();
+    file.seekg(0,ios::beg);
+    char buffer[length];
+    file.read(buffer, length);
+
+    file.close();
+
+    char startAddr = 0;
+    string results = "";
+    for(int i = 0; i < length; i += maxByteCount) {
+        results = ":";
+        if(i + maxByteCount > length) { // overflow
+            int theRest = length - i;
+            int checkSum = theRest + (startAddr & 3) + (startAddr >> 2 & 3) + 0;
+            results += ith(theRest,2);
+            results += ith(startAddr, 4);
+            results += ith(0, 2);
+            for(int j = i; j < i+theRest; j++) {
+                results += ith(buffer[j], 2);
+                checkSum += buffer[j];
+            };
+            results += ith( ( ~(checkSum & 255) + 1) & 255, 2);
+            results += "\n";
+            cout << results;
+            break;
+        } else {
+            int checkSum = maxByteCount + (startAddr & 3) + (startAddr >> 2 & 3) + 0;
+            results += ith(maxByteCount,2);
+            results += ith(startAddr, 4);
+            results += ith(0, 2);
+            startAddr += maxByteCount;
+            for(int j = i; j < i+maxByteCount; j++) {
+                results += ith(buffer[j], 2);
+                checkSum += buffer[j];
+            };
+            results += ith( ( ~(checkSum & 255) + 1) & 255, 2);
+            results += "\n";
+            cout << results;
+        };
+    };
+    results = ":00000001FF";
+    cout << results << endl;
+    return "";
+};

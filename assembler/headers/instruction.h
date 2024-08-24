@@ -21,6 +21,6 @@ enum eFunc // 7 bits
     Func_MOV = 1, // mov a,b
     Func_ADD = 2, // add a,b,c
     Func_MOVI = 64, // movi a,1
-    Func_ADDI = 65 // addi a,b,5
+    /* Func_ADDI = 65 // addi a,b,5 */
 };
 #endif

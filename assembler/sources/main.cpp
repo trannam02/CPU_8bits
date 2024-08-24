@@ -17,7 +17,12 @@ int main(const int argc,char* argv[]){
     parserLines(lines, instructions);
     generateControl(instructions, controls);
     generateMainRom(instructions);
-    /* outputMainRom(instructions); */
-    outputControl(controls);
+
+    cout << "Main Rom" << endl;
+    bin2ihx("MainRom.bin", 8);
+    cout << "Control 1A" << endl;
+    bin2ihx("Control1A.bin", 8);
+    cout << "Control 2A" << endl;
+    bin2ihx("Control2A.bin", 8);
     return 0;
 }
